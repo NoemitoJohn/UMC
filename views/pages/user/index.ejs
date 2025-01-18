@@ -1,0 +1,147 @@
+<%- include('../../partials/header') %>
+<%- include('../../components/sidebar') %>
+<% const is_setup = user.has_info ? 'disabled' : ''  %>
+<main class="bg-base-300">
+  <form id="user_form_info" action="/user/info" method="post">
+    <div class="grid gap-4 bg-base-100 p-4 rounded-md">
+      <span class="uppercase font-medium text-xl">Account Info</span>
+      <div class="grid md:grid-cols-3 gap-2">
+        <div>
+          <label class="text-xs font-medium ml-1" for="">UMC ID</label>
+          <input disabled type="text" placeholder="Type here" value="<%= user.umc_id %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">First Name</label>
+          <input type="text" placeholder="Type here" name="first_name" value="<%= user.first_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Last Name</label>
+          <input type="text" placeholder="Type here" name="last_name" value="<%= user.last_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Birthday</label>
+          <input type="date" name="birthday" value="<%= user.birthday %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+      </div>
+      <!-- address -->
+      <div class="divider divider-start my-0 mt-2 pl-1 uppercase divider-success font-medium">Address</div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Region</label>
+          <input type="text" placeholder="Region" name="region" value="<%= user.region %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Province</label>
+          <input type="text" placeholder="Province" name="province" value="<%= user.province %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">City</label>
+          <input type="text" placeholder="City" name="city" value="<%= user.city %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Barangay</label>
+          <input type="text" placeholder="Barangay" name="barangay" value="<%= user.barangay %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Address</label>
+          <input type="text" placeholder="Address" name="address" value="<%= user.address %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">zipcode</label>
+          <input type="text" placeholder="Type here" name="zipcode" value="<%= user.zipcode %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+      </div>
+      <!-- church info -->
+      <div class="divider divider-start my-0 mt-2 pl-1 uppercase divider-success font-medium">Church Info</div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">local church</label>
+          <input type="text" placeholder="Local Church" name="local_church" value="<%= user.local_church %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">church address</label>
+          <input type="text" placeholder="Local Church Address" name="local_church_address" value="<%= user.local_church_address %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Episcopal Area</label>
+          <input type="text" placeholder="Episcopal Area" name="episcopal_area" value="<%= user.episcopal_area %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Annual Conference</label>
+          <input type="text" placeholder="Annual Conference" name="annual_conference" value="<%= user.annual_conference %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">District Conference</label>
+          <input type="text" placeholder="District Conference" name="district_conference" value="<%= user.district_conference %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+      </div>
+      <div class="divider divider-start my-0 mt-2 pl-1 uppercase divider-success font-medium">Church ID</div>
+      <!-- ID info -->
+      <div class="grid md:grid-cols-3 gap-3">
+        <div class="grid gap-2">
+          <label class="text-xs font-medium ml-1 uppercase" for="">ID Picture (1x1)</label>
+          <input id="pic_1x1" type="file" accept="image/*" <%= is_setup %> name="pic_1x1" class="file-input file-input-bordered w-full file-input-sm rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">ID Signature</label>
+          <input type="text" <%= is_setup %>  placeholder="Type here" value="<%= user.last_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div class="grid gap-2">
+          <label class="text-xs font-medium ml-1 uppercase" for="">full body picture</label>
+          <input type="file" accept="image/*" <%= is_setup %>  name="pic_full" class="file-input file-input-bordered w-full  file-input-sm rounded-sm" />
+        </div>
+        
+      </div>
+      <div class="divider divider-start my-0 mt-2 pl-1 uppercase divider-success font-medium">Contact Infomation</div>
+      <!-- contact info -->
+      <div class="grid md:grid-cols-3 gap-3">
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Email</label>
+          <input type="text" placeholder="Email" disabled name="email" value="<%= user.email %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+      </div>
+      <div class="grid md:grid-cols-3 gap-3">
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Phone Number</label>
+          <input type="text" placeholder="Phone Number" name="contact_number" value="<%= user.contact_number %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Phone Number <span class="text-error">*(Incase of emergency)</span></label>
+          <input type="text" placeholder="Emergency Contact Number" name="emergency_contact_number" value="<%= user.emergency_contact_number %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Full Name <span class="text-error">*(Incase of emergency)</span></label>
+          <input type="text" placeholder="Emergency Contact Name" name="emergency_contact_name" value="<%= user.emergency_contact_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+      </div>
+      <div class="flex justify-center">
+        <button  type="submit" class="btn btn-primary btn-sm rounded-sm">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-save"><path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7"/><path d="M7 3v4a1 1 0 0 0 1 1h7"/></svg>
+          <span>Save</span>
+        </button>
+      </div>
+    </div>
+  </form>
+</main>
+
+<dialog id="crop_container_1x1" class="modal">
+  <div class="modal-box">
+    <button id="modal_close" class="btn  btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    <h3 class="text-lg font-bold">Crop Image</h3>
+    <p class="py-4">Click on ✕ button to close</p>
+    <div id="img_container" class="max-w-full flex justify-center">
+      
+    </div>
+    <div class="modal-action">      
+      <button class="btn btn-sm btn-success">Crop</button>
+    </div>
+  </div>
+</dialog>
+<script src="/public/js/user_info.js"></script>
+<%- include('../../partials/footer') %>
