@@ -2,3 +2,4 @@ node_modules
 UMC.*
 test
 database_schema.*
+.env
