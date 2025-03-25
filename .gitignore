@@ -1,3 +1,4 @@
 node_modules
-dist
 UMC.*
+test
+database_schema.*

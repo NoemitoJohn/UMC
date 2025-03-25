@@ -58,6 +58,7 @@ export const isAuthenticate = async (req : Request, res : Response, next : NextF
     
     const {payload} = await verifyToken(token)
     res.locals.token = payload; 
+    res.locals.user_type = payload['type']
     next()
 
   } catch (error) {

@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response} from 'express'
 import { matchedData, validationResult } from 'express-validator'
 import { formatValidationError, secret, signToken, verifyToken } from '../lib/lib'
-import { db } from '../db/db'
+import {  db } from '../db/db'
 import bcrypt from 'bcrypt'
 import { LibsqlError } from '@libsql/client'
-
+//TODO: Change auth to express session
 
 // redirect to index if already have a valid token
 export const authMiddleware = (req : Request, res : Response, next : NextFunction) => {
@@ -25,7 +25,7 @@ export const getRegister = (req : Request, res : Response) => {
   res.render('pages/auth/sign-up')
 }
 
-export const postRegister = async (req : Request, res : Response) => {
+export const postRegister = async (req : Request, res : Response, next : NextFunction) => {
   const validation = validationResult(req)
   
   if(!validation.isEmpty()){
@@ -36,44 +36,48 @@ export const postRegister = async (req : Request, res : Response) => {
 
   const data =  matchedData(req)
   
+  const transaction = await db.transaction('write')
+  
   try {
-    
-    const hash = await bcrypt.hash(data.password, 12);
-    
-    const transaction = await db.transaction('write')
+    const lastest_id = await transaction.execute('SELECT IFNULL(MAX(id), 0) as latest_id from users')
 
-    const getLatestUser = await transaction.execute('select ifnull(max(id), 0) as latest_id from users')
-    
-    const latestIdNumber = getLatestUser.rows[0].latest_id as number
+    const latestIdNumber = lastest_id.rows[0].latest_id as number
 
     const formatId = `UMC-${new Date().getFullYear()}-${latestIdNumber + 1}`
 
-    const insert = await transaction.execute({ 
-      sql : `insert into users (first_name, last_name, password, email, umc_id) 
-              values (?, ?, ? ,?, ?)`, 
-      args : [data.first_name, data.last_name, hash, data.email , formatId]})
-    
-    await transaction.commit()
-    
-    const id = Number(insert.lastInsertRowid)
-    
-    const jwt = await signToken({email : data.email, id : id, type : 'user' });
-    
-    res.cookie('token', jwt, {
-      httpOnly : true
+    const hash = await bcrypt.hash(data.password, 12)
+
+    const insertUser = await transaction.execute({
+      sql : `INSERT INTO users (first_name, last_name, password, email, umc_id) VALUES (?, ?, ? ,?, ?)`, 
+      args : [data.first_name, data.last_name, hash, data.email , formatId]
     })
-    
-    res.location('/')
-    res.status(200).json({success : true})
+
+    await transaction.commit()
+
+    const id = Number(insertUser.lastInsertRowid)
+    signToken({email : data.email, id : id, type : 'user' }).then(jwt => { // get jwt token
+      res.cookie('token', jwt, {
+        httpOnly : true
+      })
+
+      res.location('/')
+      res.status(200).json({success : true})
+    })
+    .catch(err => next(err))
 
   } catch (error) {
+    
+    await transaction.rollback()
+    
     if(error instanceof LibsqlError) {
       if(error.code === 'SQLITE_CONSTRAINT_UNIQUE'){
         res.status(200).json({success : false,  errors : { email : { msg : 'Email already exist!'}}})
       }
     }
-
+    next(error)
     console.log(error)
+  }finally{
+    // transaction.close()
   }
   
 }
@@ -82,7 +86,7 @@ export const getLogin = async (req : Request, res : Response) => {
   res.render('pages/auth/login')
 }
 
-export const postLogin =  async (req : Request, res : Response) => {
+export const postLogin =  async (req : Request, res : Response, next : NextFunction) => {
   const validation = validationResult(req)
   if(!validation.isEmpty()){
     const errors = formatValidationError(validation.array())
@@ -90,31 +94,67 @@ export const postLogin =  async (req : Request, res : Response) => {
     return;
   }
   
-  const data =  matchedData(req)
-
-  const user =  await db.execute({sql : 'select * from users where email = ?', args : [data.email]})
-
-  if(user.rows.length <= 0){
+  const data = matchedData(req)
+  const getUserEmail = await db.execute({sql : 'select * from users where email = ?', args : [data.email]})
+  
+  if(getUserEmail.rows.length <= 0) {
     res.status(200).json({success : false, code : 'CREDENTIAL', msg : 'Invalid Credentials' })
     return
   }
-  
-  const matchPassword = await bcrypt.compare(data.password, user.rows[0].password as string)
-  
-  if(!matchPassword){
+
+  const user = getUserEmail.rows[0]
+
+  const match = await bcrypt.compare(data.password, user.password as string)
+
+
+  if(!match) {
     res.status(200).json({success : false, code : 'CREDENTIAL', msg : 'Invalid Credentials' })
-    return  
+    return 
   }
 
-  const userData = user.rows[0]
-  const token = await signToken({email : userData.email,  id : userData.id, type : userData.account_type})
 
-  res.cookie('token', token, {
-    httpOnly : true
+  signToken({email : user.email,  id : user.id, type : user.account_type })
+  .then(jwt => {
+    
+    res.cookie('token', jwt, {
+      httpOnly : true
+    })
+
+    res.location('/')
+    res.status(200).json({success : true})
   })
-  res.location('/')
-  res.status(200).json({success : true})
 
+  // get user by email
+  // connection.query('select * from users where email = ?', [data.email], (err, rows) => {
+  //   if(err) { next(err) }
+  //   // return fail if no email match
+  //   if(rows.length <= 0) {
+  //     res.status(200).json({success : false, code : 'CREDENTIAL', msg : 'Invalid Credentials' })
+  //     return
+  //   }
+
+  //   const user = rows[0]
+  //   // compare password
+  //   bcrypt.compare(data.password, user.password, (err, match) => {
+  //     if(err) { next(err) }
+      
+  //     if(!match) {
+  //       res.status(200).json({success : false, code : 'CREDENTIAL', msg : 'Invalid Credentials' })
+  //       return  
+  //     }
+  //     // sign token
+  //     signToken({email : user.email,  id : user.id, type : user.account_type })
+  //       .then(jwt => {
+          
+  //         res.cookie('token', jwt, {
+  //           httpOnly : true
+  //         })
+
+  //         res.location('/')
+  //         res.status(200).json({success : true})
+  //       })
+  //   })
+  // })
 }
 
 export const logOut = async (req : Request, res: Response) => {

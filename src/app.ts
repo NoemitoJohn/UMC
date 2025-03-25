@@ -7,6 +7,8 @@ import { authRouter } from './routes/auth';
 // import multer from 'multer';
 import bodyParser from 'body-parser';
 import { userRouter } from './routes/user';
+import { churchRoute } from './routes/church';
+import { adminUserRouter } from './routes/admin/users';
 
 const app = express()
 
@@ -16,8 +18,9 @@ app.use(cookieParser())
 app.use(helmet({
   contentSecurityPolicy : {
     directives: {
-      'script-src' : ["'self'", 'https://cdn.jsdelivr.net/', 'https://cdnjs.cloudflare.com/'],
-      'img-src' : ["'self'", 'data:', 'blob:']
+      'script-src' : ["'self'", 'https://cdn.jsdelivr.net/', 'https://cdnjs.cloudflare.com/', 'https://cdn.datatables.net/'],
+      'img-src' : ["'self'", 'data:', 'blob:'],
+      'default-src' : ["'self'", 'blob:', 'https:']
     }
   }
 }))
@@ -31,6 +34,8 @@ app.use('/public', express.static(PUBLIC_PATH))
 
 app.use('/', indexRoute)
 app.use('/auth', authRouter)
+app.use('/church', churchRoute)
+app.use('/admin/users', adminUserRouter)
 app.use('/user', userRouter)
 
 
@@ -40,5 +45,15 @@ app.use((req, res, next) => {
 })
 
 app.listen(PORT, () => {
+  // connection.destroy()
+  // connection.connect((err) => {
+  //   if(err) { 
+  //     console.error('error connecting database: ' + err.stack)
+  //     return;
+  //   }
+  //   console.log('database connected as id ' + connection.threadId);
+  // })
+
   console.log(`running server in port http://localhost:${PORT}`)
+
 })

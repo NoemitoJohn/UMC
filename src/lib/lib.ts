@@ -1,6 +1,8 @@
 import { ValidationError } from "express-validator";
 import * as jose from 'jose'
+import multer from "multer";
 
+export const upload = multer()
 
 export const formatValidationError = (errors : ValidationError[]) => {
   const err : Record<string, Record<string, string>> = {}
@@ -26,3 +28,7 @@ export const verifyToken = async (token: string | Uint8Array) => {
   return jwt
   // token, secret
 }
+
+
+
+

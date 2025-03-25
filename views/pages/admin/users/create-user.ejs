@@ -1,28 +1,37 @@
-<%- include('../../partials/header') %>
-<%- include('../../components/sidebar') %>
+<%- include('../../../partials/header') %>
+<%- include('../../../components/sidebar') %>
 <% const is_setup = user.has_info ? 'disabled' : ''  %>
 <main class="bg-base-300">
-  <form id="user_form_info" action="/user/info" method="post">
+  <form id="user_form_info" >
     <div class="grid gap-4 bg-base-100 p-4 rounded-md">
-      <span class="uppercase font-medium text-xl">Account Info</span>
-      <div class="grid md:grid-cols-3 gap-2">
-        <div>
-          <label class="text-xs font-medium ml-1" for="">UMC ID</label>
-          <input disabled type="text" placeholder="Type here" value="<%= user.umc_id %>" class="input input-bordered input-sm w-full rounded-sm" />
-        </div>
-      </div>
+      <span class="uppercase font-medium text-xl">Create Account Info</span>
       <div class="grid md:grid-cols-3 gap-4">
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">First Name</label>
-          <input type="text" placeholder="Type here" name="first_name" value="<%= user.first_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Type here" required name="first_name" value="<%= user.first_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Middle Name</label>
+          <input type="text" placeholder="Type here" required name="middle_name" value="<%= user.middle_name %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Last Name</label>
-          <input type="text" placeholder="Type here" name="last_name" value="<%= user.last_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Type here" required name="last_name" value="<%= user.last_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        
+      </div>
+      <div class="grid md:grid-cols-3 gap-4">
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">Gender</label>
+          <select type="text" placeholder="Type here" name="gender" required value="<%= user.gender %>" class="select select-bordered w-full select-sm rounded-sm" >
+            <option disabled selected>GENDER</option>
+            <option value="MALE">MALE</option>
+            <option value="FEMALE">FEMALE</option>
+          </select>
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Birthday</label>
-          <input type="date" name="birthday" value="<%= user.birthday %>" class="input input-bordered input-sm w-full rounded-sm" required />
+          <input type="date" name="birthday"  value="<%= user.birthday %>" class="input input-bordered input-sm w-full rounded-sm" required />
         </div>
       </div>
       <!-- address -->
@@ -31,8 +40,8 @@
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Region</label>
           <select type="text" placeholder="Region" name="region_code" value="<%= user.region %>"  required>
-            <% if (region) { %>
-                <option value="<%= region %>"></option>
+            <% if (user.region) { %>
+                <option value="<%= user.region %>"></option>
             <% } else { %>
               <!-- <option value=""></option> -->
             <% } %>
@@ -41,8 +50,8 @@
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Province</label>
           <select type="text" placeholder="Province" name="province_code" value="<%= user.province %>" required>
-            <% if (provinces) { %>              
-               <option value="<%= provinces %>"></option>
+            <% if (user.province) { %>              
+               <option value="<%= user.province %>"></option>
             <% } else { %>
                 <!-- <option value=""></option>     -->
             <% } %>
@@ -51,8 +60,8 @@
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">City</label>
           <select type="text" placeholder="City" name="city_code" value="<%= user.city %>"  required> 
-            <% if (cities) { %>
-               <option value="<%= cities %>"></option>
+            <% if (user.city) { %>
+               <option value="<%= user.city %>"></option>
             <% } %>
           </select>
         </div>
@@ -61,18 +70,18 @@
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Barangay</label>
           <select type="text" placeholder="Barangay" name="barangay_code" value="<%= user.barangay %>" required>
-            <% if (barangay) { %>
-              <option value="<%= barangay %>"></option>
+            <% if (user.barangay) { %>
+              <option value="<%= user.barangay %>"></option>
             <% } %>
           </select>
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Address</label>
-          <input type="text" placeholder="Address" name="address" value="<%= user.address %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Address" autocomplete="none" name="address" value="<%= user.address %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">zipcode</label>
-          <input type="text" placeholder="Type here" name="zipcode" value="<%= user.zipcode %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Type here" autocomplete="none" name="zipcode" value="<%= user.zipcode %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
       </div>
       <!-- church info -->
@@ -90,6 +99,10 @@
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">church address</label>
           <input type="text" placeholder="Local Church Address" name="local_church_address" value="<%= user.local_church_address %>" class="input input-bordered input-sm w-full rounded-sm" />
+        </div>
+        <div>
+          <label class="text-xs font-medium ml-1 uppercase" for="">church position</label>
+          <input type="text" placeholder="Church Position" name="church_position" value="<%= user.position %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-4">
@@ -136,7 +149,7 @@
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">ID Signature</label>
-          <input type="text" <%= is_setup %>  placeholder="Type here" value="<%= user.last_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="file" <%= is_setup %>  placeholder="Type here" value="<%= user.last_name %>" class=" file-input file-input-bordered w-full file-input-sm rounded-sm" />
         </div>
         
       </div>
@@ -145,7 +158,7 @@
       <div class="grid md:grid-cols-3 gap-3">
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Email</label>
-          <input type="text" placeholder="Email" disabled name="email" value="<%= user.email %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Email" autocomplete="none" name="email" value="<%= user.email %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-3">
@@ -192,4 +205,4 @@
   </div>
 </dialog>
 <script src="/public/js/user_info.js"></script>
-<%- include('../../partials/footer') %>
+<%- include('../../../partials/footer') %>

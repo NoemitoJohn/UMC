@@ -25,7 +25,7 @@ authRouter.post('/register',
     body('first_name').notEmpty().escape(),
     body('last_name').notEmpty().escape(),
     body('email').isEmail(),
-    body('password').isLength({ min : 8}).escape().withMessage('password must be 8 characters'),
+    body('password').isLength({ min : 8 }).escape().withMessage('password must be 8 characters'),
     body('confirm_password').custom((value, {req}) => {
       return value === req.body.password
     }).withMessage('password not match')
