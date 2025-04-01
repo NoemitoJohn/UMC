@@ -1,0 +1,18 @@
+<%- include('../../../partials/header') %>
+
+<div hidden>
+  <img id="front_id" src="/public/img/front_id.jfif" alt="front_id_image" srcset="">
+  <img id="back_id" src="/public/img/back_id.jfif" alt="back_id_image" srcset="">
+  <img id="profile" class="rounded-md" src="data:image/png;base64, <%= img %>" alt="">
+  <input id="full_name" type="hidden" value="<%= name %>">
+  <input id="e_name" type="hidden" value="<%= e_name %>">
+  <input id="e_number" type="hidden" value="<%= e_number %>">
+  <input id="position" type="hidden" value="<%= position %>">
+  <input id="email" type="hidden" value="<%= email %>">
+  <input id="contact_number" type="hidden" value="<%= contact_number %>">
+  <input id="address" type="hidden" value="<%= address %>">
+</div>
+
+<button id="print_btn" class="btn btn-success text-white rounded-sm fixed top-3 left-2 uppercase">Download</button>
+<canvas id="canvas"></canvas>
+<script src="/public/js/user_print.js"></script>

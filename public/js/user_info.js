@@ -312,38 +312,28 @@ $(document).ready(function() {
 
 
     if(cropper && pic_1x1) {
-      // return // no id image found
       
       const crop = cropper.getCroppedCanvas({width : 320, height : 180});
-      //TODO: delete the file input entries
       
       formData.delete('pic_1x1');
       
-
-      Promise.all([canvasToBlobs(crop)])
-      .then(([pic_1x1]) => {
-        formData.append('id_img_1x1', pic_1x1);
-        axios.post('/user/info', formData)
+      crop.toBlob((blob) => {
+        formData.append('id_img_1x1', blob);
+        axios.post('/user/info', formData).then(function(response) {
+          // success
+          if(response.status === 200) {
+            window.location.replace('/admin/users')
+            return
+          }
+            
+          // error
+          
+        }).catch(err => {
+          console.log(err)
+        })
+         
       })
-
-
-
     }
-
-    
-    // const crop = cropper.getCroppedCanvas({width : 320, height : 180})
-    
-    // Promise.all([canvasToBlobs(crop)])
-    // .then(([pic_1x1]) => {
-      
-    //   const formData = new FormData(this);
-    //   formData.append('id_img_1x1', pic_1x1)
-
-    //   axios.post('/user/info', formData)
-
-    // })
-    // debugger
-    // console.log('submit')
   })
   
   edit_id_btn.click(function() {
@@ -418,8 +408,8 @@ function bindCropper(imageElement) {
 function canvasToBlobs(canvas) {
   return new Promise((resolve, reject) => {
     if(canvas) {
-      canvas.toBlob((b) =>{
-        if(b) { resolve(b)}
+      canvas.toBlob((b) => {
+        if(b) { resolve(b) }
         reject
       })
     }

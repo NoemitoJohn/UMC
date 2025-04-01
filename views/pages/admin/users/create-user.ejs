@@ -77,11 +77,11 @@
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Address</label>
-          <input type="text" placeholder="Address" autocomplete="none" name="address" value="<%= user.address %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input required type="text" placeholder="Address" autocomplete="none" name="address" value="<%= user.address %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">zipcode</label>
-          <input type="text" placeholder="Type here" autocomplete="none" name="zipcode" value="<%= user.zipcode %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input required type="text" placeholder="Type here" autocomplete="none" name="zipcode" value="<%= user.zipcode %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
       </div>
       <!-- church info -->
@@ -89,7 +89,7 @@
       <div class="grid md:grid-cols-3 gap-4">
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">local church</label>
-          <select type="text" placeholder="Local Church" name="local_church" >
+          <select type="text" placeholder="Local Church" name="local_church" required>
             <% if (user.local_church) { %>
             <option value="<%= user.local_church %>"></option>
             <% } %>
@@ -98,17 +98,17 @@
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">church address</label>
-          <input type="text" placeholder="Local Church Address" name="local_church_address" value="<%= user.local_church_address %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" required placeholder="Local Church Address" name="local_church_address" value="<%= user.local_church_address %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">church position</label>
-          <input type="text" placeholder="Church Position" name="church_position" value="<%= user.position %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" required placeholder="Church Position" name="church_position" value="<%= user.position %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-4">
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Episcopal Area</label>
-          <select type="text" placeholder="Episcopal Area" name="episcopal_area">
+          <select type="text" placeholder="Episcopal Area" name="episcopal_area" required>
             <% if (user.episcopal_area) { %>
              <option value="<%= user.episcopal_area %>"></option>
             <% } %>
@@ -116,7 +116,7 @@
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Annual Conference</label>
-          <select type="text" placeholder="Annual Conference" name="annual_conference"> 
+          <select type="text" placeholder="Annual Conference" name="annual_conference" required> 
            <% if (user.annual_conference) { %>
               <option value="<%= user.annual_conference %>"></option>
            <% } %>
@@ -124,7 +124,7 @@
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">District Conference</label>
-          <select type="text" placeholder="District Conference" name="district_conference" >
+          <select type="text" placeholder="District Conference" name="district_conference" required>
             <% if (user.district_conference) { %>
              <option value="<%= user.district_conference %>"></option>
             <% } %>
@@ -149,7 +149,7 @@
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">ID Signature</label>
-          <input type="file" <%= is_setup %>  placeholder="Type here" value="<%= user.last_name %>" class=" file-input file-input-bordered w-full file-input-sm rounded-sm" />
+          <input type="file" disabled placeholder="Type here" value="<%= user.last_name %>" class=" file-input file-input-bordered w-full file-input-sm rounded-sm" />
         </div>
         
       </div>
@@ -158,21 +158,21 @@
       <div class="grid md:grid-cols-3 gap-3">
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Email</label>
-          <input type="text" placeholder="Email" autocomplete="none" name="email" value="<%= user.email %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Email" autocomplete="none" required name="email" value="<%= user.email %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
       </div>
       <div class="grid md:grid-cols-3 gap-3">
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Phone Number</label>
-          <input type="text" placeholder="Phone Number" name="contact_number" value="<%= user.contact_number %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Phone Number" required name="contact_number" value="<%= user.contact_number %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Phone Number <span class="text-error">*(Incase of emergency)</span></label>
-          <input type="text" placeholder="Emergency Contact Number" name="emergency_contact_number" value="<%= user.emergency_contact_number %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Emergency Contact Number" required name="emergency_contact_number" value="<%= user.emergency_contact_number %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
         <div>
           <label class="text-xs font-medium ml-1 uppercase" for="">Full Name <span class="text-error">*(Incase of emergency)</span></label>
-          <input type="text" placeholder="Emergency Contact Name" name="emergency_contact_name" value="<%= user.emergency_contact_name %>" class="input input-bordered input-sm w-full rounded-sm" />
+          <input type="text" placeholder="Emergency Contact Name" required name="emergency_contact_name" value="<%= user.emergency_contact_name %>" class="input input-bordered input-sm w-full rounded-sm" />
         </div>
       </div>
       <div class="flex justify-center">
