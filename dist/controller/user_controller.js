@@ -43,11 +43,15 @@ exports.getUser = getUser;
 const postUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     const userData = req.body;
+    // res.send('yawa')
+    // return
     const tx = yield db_1.db.transaction('write');
     if (!tx)
         return next(new Error('Something went wrong'));
     try {
-        const fileBuffer = yield (0, sharp_1.default)((_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer).toBuffer();
+        const fileBuffer = yield (0, sharp_1.default)((_a = req.file) === null || _a === void 0 ? void 0 : _a.buffer)
+            // .resize({width : 305, height : 305})
+            .toBuffer();
         const getLatestId = yield tx.execute('SELECT IFNULL(MAX(id), 0) as latest_id from users_info');
         const latestIdNumber = getLatestId.rows[0].latest_id;
         const UMCId = `UMC-${new Date().getFullYear()}-${latestIdNumber + 1}`;
@@ -118,6 +122,7 @@ const postUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
             ]
         });
         yield tx.commit();
+        res.json({ success: true });
     }
     catch (error) {
         yield tx.rollback();
