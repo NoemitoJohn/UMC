@@ -1,6 +1,6 @@
 <%- include('../../../partials/header') %>
 <%- include('../../../components/sidebar') %>
-<main >
+<main>
   <div class="flex justify-end">
     <a href="/admin/users/create"  class="btn btn-sm rounded-sm btn-success">Add User</a>
   </div>
@@ -9,16 +9,25 @@
     <table id="users_table" class="display" style="width:100%">
       <thead>
         <tr>
+            <th>ID</th>
+            <th>UMC-ID</th>
             <th>Last Name</th>
             <th>First Name</th>
             <th>Local Church</th>
             <th>Position</th>
-            <!-- <th>Start date</th>
-            <th>Salary</th> -->
         </tr>
     </thead>
     <tbody>
-  
+        <% users.forEach(user => { %>
+          <tr>
+            <td><%= user.id %></td>
+            <td><%= user.umc_id %></td>
+            <td><%= user.last_name %></td>
+            <td><%= user.first_name %></td>
+            <td><%= user.local_church %></td>
+            <td><%= user.church_position %></td>
+          </tr>
+        <% }) %>
     </tbody>
     </table>
   </div>

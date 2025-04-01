@@ -31,14 +31,17 @@ export const getUser = async (req : Request, res : Response, next : NextFunction
 
 export const postUser = async (req : Request, res : Response, next : NextFunction) => {
   const userData = req.body
-  
+  // res.send('yawa')
+  // return
   const tx = await db.transaction('write')
 
   if(!tx) return next(new Error('Something went wrong'))
 
   try {
     
-    const fileBuffer = await sharp(req.file?.buffer).toBuffer()
+    const fileBuffer = await sharp(req.file?.buffer)
+      // .resize({width : 305, height : 305})
+      .toBuffer()
     const getLatestId = await tx.execute('SELECT IFNULL(MAX(id), 0) as latest_id from users_info')
     
     const latestIdNumber = getLatestId.rows[0].latest_id as number
@@ -115,6 +118,9 @@ export const postUser = async (req : Request, res : Response, next : NextFunctio
     })
 
     await tx.commit()
+
+    res.json({success : true})
+    
   } catch (error) {
     await tx.rollback()
     next(error)
